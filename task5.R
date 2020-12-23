@@ -14,7 +14,7 @@ md_pattern(NHANES2,pattern=FALSE,color=c('#34111b','#e30f41'))
 par(mar=c(3,3,2,1),mgp=c(2,0.6,0))
 plot_all(NHANES2,breaks=25,ncol=4)
 
-# set the value of maxit and m to check the estimates
+# imputation step
 imp5=mice(NHANES2,maxit=20,m=30,seed=11,printFlag=FALSE)
 imp5$loggedEvents
 
@@ -25,6 +25,7 @@ densityplot(imp5)
 source_url("https://gist.githubusercontent.com/NErler/0d00375da460dd33839b98faeee2fdab/raw/c6f537ecf80eddcefd94992ec7926aa57d454536/propplot.R")
 propplot(imp5)
 
+# analysis model
 fits5=with(imp5,lm(wgt~gender+age+hgt+WC))
 comp1=complete(imp5,1)
 # fitted values versus residuals
