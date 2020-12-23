@@ -18,16 +18,20 @@ knitr::kable(df1,escape=FALSE,digits=3,
              caption="Regression coefficient estimates and 95% CI")
 
 # question2
+# append a new variable to dataset
 x3=dataex4[ ,2]*dataex4[ ,3]
 dataex4_2=cbind(dataex4,x3)
 imp0=mice(dataex4_2,printFlag=FALSE,seed=1,m=50)
+# change the imputation method of x3 variable
 meth=imp0$method
 meth["x3"]="~I(x1*x2)"
 pred=imp0$predictorMatrix
 pred[c("x1","x2"),"x3"]=0
 imp2=mice(dataex4_2,method=meth,predictorMatrix=pred,printFlag=FALSE,seed=1,m=50)
 imp2$loggedEvents
+# check convergence
 plot(imp2,layout=c(2,3))
+# combine the results
 ests2=pool(with(imp2,lm(y~x1+x2+x3)))
 summary2=summary(ests2,conf.int=TRUE)
 df2=data.frame("Estimate"=summary2[ ,2][2:4],

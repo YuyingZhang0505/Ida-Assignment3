@@ -1,5 +1,6 @@
 load("dataex2.Rdata")
 beta1=3
+# stochastics regression imputation
 count_fix=0
 for (i in 1:100){
   imp_fix=mice(dataex2[ , ,i],method="norm.nob",printFlag=FALSE,seed=1,m=20)
@@ -16,6 +17,7 @@ for (i in 1:100){
 # under the stochastic regression imputation is 88%
 emp_covp_fix=count_fix/100
 
+# bootstrap
 count_uncer=0
 for (i in 1:100){
   imp_uncer=mice(dataex2[ , ,i],method="norm.boot",printFlag=FALSE,seed=1,m=20)
